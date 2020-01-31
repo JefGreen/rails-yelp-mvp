@@ -3,27 +3,13 @@ Rails.application.routes.draw do
   # show all restaurants
   # create a new restaurant
   # find a restaurant
+  resources :restaurants, only: %i[index new create show] do
+    resources :reviews, only: %i[index new create]
+  end
 
-  # read all restaurants
-  get 'restaurants', to: 'restaurants#index'
-
-  # read one restaurant
-  get 'restaurants/:id', to: 'restaurants#show', as: :restaurant
-
-  # create one restaurant
-  # 1st request to get the form
-  # 2nd request to post params
-  get 'restaurants/new', to: 'restaurants#new'
-  post 'restaurants', to: 'restaurants#create'
-
-  # update one restaurant
-  get 'restaurants/:id/edit', to: 'restaurants#edit'
-  patch 'restaurants/:id', to: 'restaurants#update'
-
-  # delete one restaurant
-  delete 'restaurants/:id', to: 'restaurants#destroy'
-
-
-  # GET "restaurants/38/reviews/new"
-  # POST "restaurants/38/reviews"
+  namespace :admin do
+    resources :restaurants do
+      resources :reviews
+    end
+  end
 end
